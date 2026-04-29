@@ -99,20 +99,24 @@
   });
 })();
 
-// ---------- Background-layer parallax ----------
+// ---------- Per-section backdrop parallax ----------
 (function () {
-  const layers = [
-    { el: document.querySelector(".bg-layer-1"), speed: 0.30 }, // back, drifts slowest
-    { el: document.querySelector(".bg-layer-2"), speed: 0.18 }, // mid
-    { el: document.querySelector(".bg-layer-3"), speed: 0.08 }, // front, near content speed
-  ].filter((l) => l.el);
-  if (!layers.length) return;
+  const backdrops = Array.from(document.querySelectorAll(".section-backdrop"));
+  if (!backdrops.length) return;
 
   let ticking = false;
   function update() {
-    const y = window.scrollY;
-    layers.forEach(({ el, speed }) => {
-      el.style.transform = `translate3d(0, ${y * speed}px, 0)`;
+    const vh = window.innerHeight;
+    backdrops.forEach((bg) => {
+      const section = bg.parentElement;
+      const rect = section.getBoundingClientRect();
+      // Skip work when the section is far from viewport
+      if (rect.bottom < -vh || rect.top > vh * 2) return;
+      const speed = parseFloat(bg.dataset.speed) || 0.35;
+      // Anchor parallax to the moment the section first enters the viewport,
+      // so the backdrop drifts down as the section scrolls past it (= slower than content).
+      const progress = vh - rect.top;
+      bg.style.transform = `translate3d(0, ${progress * speed}px, 0)`;
     });
     ticking = false;
   }
@@ -127,6 +131,7 @@
     },
     { passive: true }
   );
+  window.addEventListener("resize", update, { passive: true });
   update();
 })();
 

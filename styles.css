@@ -40,51 +40,58 @@ body {
   background-attachment: fixed;
 }
 
-/* ---------- Background layers (devices · apps · games) ---------- */
-.bg-layers {
+/* ---------- Per-section parallax backdrops ---------- */
+.section-backdrop {
   position: absolute;
-  inset: 0;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
-}
-.bg-layer {
-  position: absolute;
-  inset: 0;
+  will-change: transform;
 }
 .bg-icon {
   position: absolute;
   display: block;
   aspect-ratio: 1;
-  will-change: transform;
 }
 .bg-icon svg {
   width: 100%;
   height: 100%;
   fill: none;
   stroke: currentColor;
-  stroke-width: 1.4;
+  stroke-width: 1.5;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
-.bg-layer { will-change: transform; }
 
-.bg-layer-1 { color: var(--ink); }
-.bg-layer-1 .bg-icon { opacity: 0.10; filter: blur(1.2px); }
-.bg-layer-1 .bg-icon svg { stroke-width: 1.2; }
+/* Each section themes its backdrop with a tint + opacity */
+.about    .section-backdrop { color: var(--amber); }
+.about    .bg-icon { opacity: 0.18; }
 
-.bg-layer-2 { color: var(--cyan); }
-.bg-layer-2 .bg-icon { opacity: 0.18; filter: blur(0.4px); }
-.bg-layer-2 .bg-icon svg { stroke-width: 1.5; }
+.work     .section-backdrop { color: var(--cyan); }
+.work     .bg-icon { opacity: 0.20; }
 
-.bg-layer-3 { color: var(--purple); }
-.bg-layer-3 .bg-icon { opacity: 0.32; }
-.bg-layer-3 .bg-icon svg { stroke-width: 1.8; }
+.games    .section-backdrop { color: var(--purple); }
+.games    .bg-icon { opacity: 0.28; }
 
-/* Lift sections above the layered background */
-.nav, .hero, .marquee, .about, .work, .games, .contact {
+.contact  .section-backdrop { color: var(--magenta); }
+.contact  .bg-icon { opacity: 0.18; }
+
+/* Sections clip their backdrop and stack content above */
+.about, .work, .contact {
   position: relative;
+  overflow: hidden;
   z-index: 1;
+}
+.games { z-index: 1; } /* already has position:relative + overflow:hidden */
+.about    > *:not(.section-backdrop),
+.work     > *:not(.section-backdrop),
+.games    > *:not(.section-backdrop):not(.games-bg),
+.contact  > *:not(.section-backdrop) {
+  position: relative;
+  z-index: 2;
 }
 .cursor, .cursor-dot { z-index: 9999; }
 
