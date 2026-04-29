@@ -67,15 +67,19 @@ body {
   stroke-linecap: round;
   stroke-linejoin: round;
 }
+.bg-layer { will-change: transform; }
+
 .bg-layer-1 { color: var(--ink); }
-.bg-layer-1 .bg-icon { opacity: 0.05; filter: blur(0.4px); }
+.bg-layer-1 .bg-icon { opacity: 0.10; filter: blur(1.2px); }
+.bg-layer-1 .bg-icon svg { stroke-width: 1.2; }
 
 .bg-layer-2 { color: var(--cyan); }
-.bg-layer-2 .bg-icon { opacity: 0.07; }
+.bg-layer-2 .bg-icon { opacity: 0.18; filter: blur(0.4px); }
+.bg-layer-2 .bg-icon svg { stroke-width: 1.5; }
 
 .bg-layer-3 { color: var(--purple); }
-.bg-layer-3 .bg-icon { opacity: 0.10; }
-.bg-layer-3 .bg-icon svg { stroke-width: 1.6; }
+.bg-layer-3 .bg-icon { opacity: 0.32; }
+.bg-layer-3 .bg-icon svg { stroke-width: 1.8; }
 
 /* Lift sections above the layered background */
 .nav, .hero, .marquee, .about, .work, .games, .contact {

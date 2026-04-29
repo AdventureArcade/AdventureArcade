@@ -99,6 +99,37 @@
   });
 })();
 
+// ---------- Background-layer parallax ----------
+(function () {
+  const layers = [
+    { el: document.querySelector(".bg-layer-1"), speed: 0.30 }, // back, drifts slowest
+    { el: document.querySelector(".bg-layer-2"), speed: 0.18 }, // mid
+    { el: document.querySelector(".bg-layer-3"), speed: 0.08 }, // front, near content speed
+  ].filter((l) => l.el);
+  if (!layers.length) return;
+
+  let ticking = false;
+  function update() {
+    const y = window.scrollY;
+    layers.forEach(({ el, speed }) => {
+      el.style.transform = `translate3d(0, ${y * speed}px, 0)`;
+    });
+    ticking = false;
+  }
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!ticking) {
+        requestAnimationFrame(update);
+        ticking = true;
+      }
+    },
+    { passive: true }
+  );
+  update();
+})();
+
 // ---------- Year ----------
 (function () {
   const y = document.getElementById("year");
